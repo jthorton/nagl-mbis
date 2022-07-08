@@ -169,6 +169,7 @@ class PaulingElectronegativity(AtomFeature):
     """
     Return the pauling electronegativity of each of the atoms.
     """
+
     # values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
     _negativities = {
         1: 2.2,
