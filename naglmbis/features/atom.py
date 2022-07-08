@@ -123,3 +123,72 @@ class BondInRingOfSize(AtomFeature):
 
     def __len__(self):
         return 1
+
+
+class LipinskiDonor(AtomFeature):
+    """
+    Return if the atom is a Lipinski h-bond donor.
+    """
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs) -> torch.Tensor:
+        from rdkit.Chem import Lipinski
+
+        rd_molecule: Chem.Mol = molecule.to_rdkit()
+        donors = Lipinski._HDonors(rd_molecule)
+        # squash the lists
+        donors = [d for donor in donors for d in donor]
+        return torch.tensor(
+            [int(atom.GetIdx() in donors) for atom in rd_molecule.GetAtoms()]
+        ).reshape(-1, 1)
+
+
+class LipinskiAcceptor(AtomFeature):
+    """
+    Return if the atom is a Lipinski h-bond acceptor.
+    """
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs):
+        from rdkit.Chem import Lipinski
+
+        rd_molecule: Chem.Mol = molecule.to_rdkit()
+        acceptors = Lipinski._HAcceptors(rd_molecule)
+        # squash the lists
+        acceptors = [a for acceptor in acceptors for a in acceptor]
+        return torch.tensor(
+            [int(atom.GetIdx() in acceptors) for atom in rd_molecule.GetAtoms()]
+        ).reshape(-1, 1)
+
+
+class PaulingElectronegativity(AtomFeature):
+    """
+    Return the pauling electronegativity of each of the atoms.
+    """
+    # values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
+    _negativities = {
+        1: 2.2,
+        5: 2.04,
+        6: 2.55,
+        7: 3.04,
+        8: 3.44,
+        9: 3.98,
+        14: 1.9,
+        15: 2.19,
+        16: 2.58,
+        17: 3.16,
+        35: 2.96,
+        53: 2.66,
+    }
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs):
+        return torch.tensor(
+            [self._negativities[atom.atomic_number] for atom in molecule.atoms]
+        ).reshape(-1, 1)
