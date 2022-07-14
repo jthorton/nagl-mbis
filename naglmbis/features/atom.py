@@ -193,3 +193,94 @@ class PaulingElectronegativity(AtomFeature):
         return torch.tensor(
             [self._negativities[atom.atomic_number] for atom in molecule.atoms]
         ).reshape(-1, 1)
+
+
+class SandersonElectronegativity(AtomFeature):
+    """
+    Return the Sanderson electronegativity of each of the atoms.
+
+    Values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
+    """
+
+    _negativities = {
+        1: 2.59,
+        5: 2.28,
+        6: 2.75,
+        7: 3.19,
+        8: 3.65,
+        9: 4.0,
+        14: 2.14,
+        15: 2.52,
+        16: 2.96,
+        17: 3.48,
+        35: 3.22,
+        53: 2.78,
+    }
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs):
+        return torch.Tensor(
+            [self._negativities[atom.atomic_number] for atom in molecule.atoms]
+        ).reshape(-1, 1)
+
+
+class vdWRadius(AtomFeature):
+    """
+    Return the vdW radius of the atom.
+
+    Values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
+    """
+
+    _radii = {
+        1: 1.17,
+        5: 1.62,
+        6: 1.75,
+        7: 1.55,
+        8: 1.4,
+        9: 1.3,
+        14: 1.97,
+        15: 1.85,
+        16: 1.8,
+        17: 1.75,
+        35: 1.95,
+        53: 2.1,
+    }
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs):
+        return torch.Tensor(
+            [self._radii[atom.atomic_number] for atom in molecule.atoms]
+        ).reshape(-1, 1)
+
+
+class AtomicPolarisability(AtomFeature):
+    """Assign the atomic polarisability for each atom.
+    values from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
+    """
+
+    _polarisability = {
+        1: 0.67,
+        5: 3.03,
+        6: 1.76,
+        7: 1.1,
+        8: 1.1,
+        9: 0.56,
+        14: 5.38,
+        15: 3.63,
+        16: 2.9,
+        17: 2.18,
+        35: 3.05,
+        53: 5.35,
+    }
+
+    def __len__(self):
+        return 1
+
+    def __call__(self, molecule: Molecule, *args, **kwargs):
+        return torch.Tensor(
+            [self._polarisability[atom.atomic_number] for atom in molecule.atoms]
+        ).reshape(-1, 1)
