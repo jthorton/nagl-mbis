@@ -21,7 +21,7 @@ jobs:
         shell: bash
         run: |
           python -m pip install --upgrade pip
-          python setup.py develop --no-deps
+          pip install -e .
 
       - name: Install black
         shell: bash
