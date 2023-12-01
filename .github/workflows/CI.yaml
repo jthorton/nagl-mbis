@@ -56,7 +56,7 @@ jobs:
       - name: Install NAGL-MBIS
         shell: bash -l {0}
         run: |
-          pip install -e .
+          pip install -e . --no-build-isolation 
 
       - name: PyTest
         shell: bash -l {0}

@@ -25,7 +25,7 @@ cd nagl-mbis
 With the nagl environment activate install the models via:
 
 ```bash
-pip install .
+pip install -e . --no-build-isolation 
 ```
 
 ## Quick start
