@@ -1,1 +1,15 @@
-from naglmbis.features.atom import HydrogenAtoms, AtomInRingOfSize, LipinskiDonor, LipinskiAcceptor, PaulingElectronegativity, SandersonElectronegativity, VDWRadius, AtomicPolarisability, Hybridization, TotalValence, ExplicitValence, AtomicMass, TotalDegree
+from naglmbis.features.atom import (
+    HydrogenAtoms,
+    AtomInRingOfSize,
+    LipinskiDonor,
+    LipinskiAcceptor,
+    PaulingElectronegativity,
+    SandersonElectronegativity,
+    VDWRadius,
+    AtomicPolarisability,
+    Hybridization,
+    TotalValence,
+    ExplicitValence,
+    AtomicMass,
+    TotalDegree,
+)

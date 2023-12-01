@@ -11,8 +11,12 @@ from pydantic import Field, dataclasses, Extra
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class HydrogenAtoms(AtomFeature):
     """One hot encode the number of bonded hydrogen atoms"""
+
     type: Literal["hydrogenatoms"] = "hydrogenatoms"
-    hydrogens: list[int] = Field([0, 1, 2, 3, 4], description="The options for the number of bonded hydrogens to one hot encode.")
+    hydrogens: list[int] = Field(
+        [0, 1, 2, 3, 4],
+        description="The options for the number of bonded hydrogens to one hot encode.",
+    )
 
     def __call__(self, molecule: Chem.Mol) -> torch.Tensor:
         return torch.vstack(
@@ -32,7 +36,10 @@ class HydrogenAtoms(AtomFeature):
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class AtomInRingOfSize(AtomFeature):
     type: Literal["ringofsize"] = "ringofsize"
-    ring_sizes: list[int] = Field([3, 4, 5, 6, 7, 8], description="The ring of size we want to check membership of.")
+    ring_sizes: list[int] = Field(
+        [3, 4, 5, 6, 7, 8],
+        description="The ring of size we want to check membership of.",
+    )
 
     def __call__(self, molecule: Chem.Mol) -> torch.Tensor:
         ring_info: Chem.RingInfo = molecule.GetRingInfo()
@@ -44,18 +51,21 @@ class AtomInRingOfSize(AtomFeature):
                         int(ring_info.IsAtomInRingOfSize(atom.GetIdx(), ring_size))
                         for ring_size in self.ring_sizes
                     ]
-                ) for atom in molecule.GetAtoms()
+                )
+                for atom in molecule.GetAtoms()
             ]
         )
 
     def __len__(self):
         return len(self.ring_sizes)
 
+
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class LipinskiDonor(AtomFeature):
     """
     Return if the atom is a Lipinski h-bond donor.
     """
+
     type: Literal["lipinskidonor"] = "lipinskidonor"
 
     def __len__(self):
@@ -71,11 +81,13 @@ class LipinskiDonor(AtomFeature):
             [int(atom.GetIdx() in donors) for atom in molecule.GetAtoms()]
         ).reshape(-1, 1)
 
+
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class LipinskiAcceptor(AtomFeature):
     """
     Return if the atom is a Lipinski h-bond acceptor.
     """
+
     type: Literal["lipinskiacceptor"] = "lipinskiacceptor"
 
     def __len__(self):
@@ -97,6 +109,7 @@ class PaulingElectronegativity(AtomFeature):
     """
     Return the pauling electronegativity of each of the atoms.
     """
+
     type: Literal["paulingelectronegativity"] = "paulingelectronegativity"
     # values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
     negativities: dict[int, float] = Field(
@@ -114,7 +127,7 @@ class PaulingElectronegativity(AtomFeature):
             35: 2.96,
             53: 2.66,
         },
-        description="The reference negativities for each element."
+        description="The reference negativities for each element.",
     )
 
     def __len__(self):
@@ -133,6 +146,7 @@ class SandersonElectronegativity(AtomFeature):
 
     Values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
     """
+
     type: Literal["sandersonelectronegativity"] = "sandersonelectronegativity"
     negativities: dict[int, float] = Field(
         {
@@ -149,7 +163,7 @@ class SandersonElectronegativity(AtomFeature):
             35: 3.22,
             53: 2.78,
         },
-        description="The reference negativities for each element."
+        description="The reference negativities for each element.",
     )
 
     def __len__(self):
@@ -168,6 +182,7 @@ class VDWRadius(AtomFeature):
 
     Values taken from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
     """
+
     type: Literal["vdwradius"] = "vdwradius"
     radii: dict[int, float] = Field(
         {
@@ -184,7 +199,7 @@ class VDWRadius(AtomFeature):
             35: 1.95,
             53: 2.1,
         },
-        description="The reference vdW radii in angstroms for each element."
+        description="The reference vdW radii in angstroms for each element.",
     )
 
     def __len__(self):
@@ -201,6 +216,7 @@ class AtomicPolarisability(AtomFeature):
     """Assign the atomic polarisability for each atom.
     values from <https://github.com/AstexUK/ESP_DNN/blob/master/esp_dnn/data/atom_data.csv>
     """
+
     type: Literal["atomicpolarisability"] = "atomicpolarisability"
     polarisability: dict[int, float] = Field(
         {
@@ -217,7 +233,7 @@ class AtomicPolarisability(AtomFeature):
             35: 3.05,
             53: 5.35,
         },
-        description="The atomic polarisability in atomic units for each element."
+        description="The atomic polarisability in atomic units for each element.",
     )
 
     def __len__(self):
@@ -234,6 +250,7 @@ class Hybridization(AtomFeature):
     """
     one hot encode the rdkit hybridization of the atom.
     """
+
     type: Literal["hybridization"] = "hybridization"
     hybridization: list[Chem.rdchem.HybridizationType] = Field(
         [
@@ -244,7 +261,7 @@ class Hybridization(AtomFeature):
             Chem.rdchem.HybridizationType.SP3D2,
             Chem.rdchem.HybridizationType.S,
         ],
-        description="The list of hybridization types which we can one hot encode"
+        description="The list of hybridization types which we can one hot encode",
     )
 
     def __len__(self):
@@ -258,6 +275,7 @@ class Hybridization(AtomFeature):
             ]
         )
 
+
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class TotalValence(AtomFeature):
     type: Literal["totalvalence"] = "totalvalence"
@@ -266,9 +284,8 @@ class TotalValence(AtomFeature):
         return 1
 
     def __call__(self, molecule: Chem.Mol) -> torch.Tensor:
-        return torch.Tensor(
-            [[atom.GetTotalValence()] for atom in molecule.GetAtoms()]
-        )
+        return torch.Tensor([[atom.GetTotalValence()] for atom in molecule.GetAtoms()])
+
 
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class ExplicitValence(AtomFeature):
@@ -285,29 +302,24 @@ class ExplicitValence(AtomFeature):
 
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class AtomicMass(AtomFeature):
-
     type: Literal["atomicmass"] = "atomicmass"
 
     def __len__(self):
         return 1
 
     def __call__(self, molecule: Chem.Mol) -> torch.Tensor:
-        return torch.Tensor(
-            [[atom.GetMass()] for atom in molecule.GetAtoms()]
-        )
+        return torch.Tensor([[atom.GetMass()] for atom in molecule.GetAtoms()])
+
 
 @dataclasses.dataclass(config={"extra": Extra.forbid})
 class TotalDegree(AtomFeature):
-
     type: Literal["totaldegree"] = "totaldegree"
 
     def __len__(self):
         return 1
 
     def __call__(self, molecule: Chem.Mol) -> torch.Tensor:
-        return torch.Tensor(
-            [[atom.GetTotalDegree()] for atom in molecule.GetAtoms()]
-        )
+        return torch.Tensor([[atom.GetTotalDegree()] for atom in molecule.GetAtoms()])
 
 
 # Register all new features

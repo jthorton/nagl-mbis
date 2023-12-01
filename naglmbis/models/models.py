@@ -8,7 +8,7 @@ import torch
 
 charge_weights = {
     "nagl-v1-mbis": {"checkpoint_path": "nagl-v1-mbis.ckpt"},
-    "nagl-v1-mbis-dipole": {"checkpoint_path": "nagl-v1-mbis-dipole.ckpt"}
+    "nagl-v1-mbis-dipole": {"checkpoint_path": "nagl-v1-mbis-dipole.ckpt"},
 }
 # volume_weights = {
 #     "nagl-v1": {"path": "mbis_volumes_v1.ckpt", "model": MBISGraphModel}

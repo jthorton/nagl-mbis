@@ -13,6 +13,8 @@ class MBISGraphModel(DGLMoleculeLightningModel):
     "A wrapper to make it easy to load and evaluate models"
 
     def compute_properties(self, molecule: Chem.Mol) -> Dict[str, torch.Tensor]:
-        dgl_molecule = DGLMolecule.from_rdkit(molecule, self.config.model.atom_features, self.config.model.bond_features)
+        dgl_molecule = DGLMolecule.from_rdkit(
+            molecule, self.config.model.atom_features, self.config.model.bond_features
+        )
 
         return self.forward(dgl_molecule)
