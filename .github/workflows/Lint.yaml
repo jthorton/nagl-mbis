@@ -13,21 +13,26 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Python Setup
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@3
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Create Environment
+      - name: Install lint
         shell: bash
         run: |
-          pip install -e . --no-build-isolation 
-
-      - name: Install black
-        shell: bash
-        run: |
-          pip install black
+          pip install black isort flake8
 
       - name: Run black
         shell: bash
         run: |
           black naglmbis --check
+
+      - name: Run isort
+        shell: bash
+        run: |
+          isort --check-only naglmbis
+
+      - name: Run flake8
+        shell: bash
+        run: |
+          flake8 naglmbis
