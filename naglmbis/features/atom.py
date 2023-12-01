@@ -1,8 +1,7 @@
-from typing import Literal, Optional
+from typing import Literal
 
 import torch
 from nagl.features import AtomFeature, one_hot_encode, register_atom_feature
-from openff.toolkit.topology import Molecule
 from pydantic import Extra, Field, dataclasses
 from rdkit import Chem
 

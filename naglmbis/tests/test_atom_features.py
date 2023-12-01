@@ -1,5 +1,4 @@
 import numpy as np
-from nagl.features import AtomConnectivity
 
 from naglmbis.features import (
     AtomicMass,

@@ -20,7 +20,7 @@ jobs:
       - name: Install lint
         shell: bash
         run: |
-          pip install black isort flake8
+          pip install black isort Flake8-pyproject
 
       - name: Run black
         shell: bash
