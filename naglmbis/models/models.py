@@ -1,10 +1,10 @@
+import pathlib
 from typing import Literal
+
+import torch
 
 from naglmbis.models.base_model import MBISGraphModel
 from naglmbis.utils import get_model_weights
-import pathlib
-import torch
-
 
 charge_weights = {
     "nagl-v1-mbis": {"checkpoint_path": "nagl-v1-mbis.ckpt"},

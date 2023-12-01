@@ -1,11 +1,10 @@
-from typing import Optional, Literal
+from typing import Literal, Optional
 
 import torch
 from nagl.features import AtomFeature, one_hot_encode, register_atom_feature
 from openff.toolkit.topology import Molecule
-
+from pydantic import Extra, Field, dataclasses
 from rdkit import Chem
-from pydantic import Field, dataclasses, Extra
 
 
 @dataclasses.dataclass(config={"extra": Extra.forbid})

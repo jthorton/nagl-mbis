@@ -4,8 +4,8 @@ import abc
 from typing import Dict, List, Literal, Optional
 
 import torch
-from nagl.training import DGLMoleculeLightningModel
 from nagl.molecules import DGLMolecule
+from nagl.training import DGLMoleculeLightningModel
 from rdkit import Chem
 
 
