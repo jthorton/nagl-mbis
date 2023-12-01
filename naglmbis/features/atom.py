@@ -21,7 +21,7 @@ class HydrogenAtoms(AtomFeature):
         return torch.vstack(
             [
                 one_hot_encode(
-                    atom.GetTotalNumHs(),
+                    atom.GetTotalNumHs(includeNeighbors=True),
                     self.hydrogens,
                 )
                 for atom in molecule.GetAtoms()

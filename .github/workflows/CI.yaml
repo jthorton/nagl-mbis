@@ -61,7 +61,7 @@ jobs:
       - name: PyTest
         shell: bash -l {0}
         run: |
-          pytest -v --cov=naglmbis --cov-config=setup.cfg naglmbis/tests/ --cov-report=xml --color=yes
+          pytest -v --cov=naglmbis --cov-config=pyproject.toml naglmbis/tests/ --cov-report=xml --color=yes
 
       - name: Codecov
         uses: codecov/codecov-action@v1
