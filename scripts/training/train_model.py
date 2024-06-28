@@ -209,15 +209,17 @@ def main():
     n_gpus = 0 if not torch.cuda.is_available() else 1
     print(f"Using {n_gpus} GPUs")
 
-    model_checkpoint = ModelCheckpoint(monitor='val/loss', dirpath=output_dir.joinpath(''))
+    model_checkpoint = ModelCheckpoint(
+        monitor="val/loss", dirpath=output_dir.joinpath("")
+    )
     trainer = pl.Trainer(
-        accelerator='cpu',
+        accelerator="cpu",
         # devices=n_gpus,
         min_epochs=n_epochs,
         max_epochs=n_epochs,
         logger=logger,
         log_every_n_steps=50,
-        callbacks=[model_checkpoint]
+        callbacks=[model_checkpoint],
     )
 
     trainer.fit(model, datamodule=data)

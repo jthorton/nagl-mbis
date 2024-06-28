@@ -16,7 +16,7 @@ def calculate_stats(dataset_name: str):
 
     # load the dataset
     dataset = dc.data.DiskDataset(dataset_name)
-    
+
     for smiles in dataset.ids:
         mol = Chem.MolFromSmiles(smiles, ps)
         charges = []
@@ -27,7 +27,7 @@ def calculate_stats(dataset_name: str):
                 elements[atomic_number] += 1
             else:
                 elements[atomic_number] = 1
-        
+
         total_charge = sum(charges)
         if total_charge in formal_charges:
             formal_charges[total_charge] += 1
@@ -40,11 +40,12 @@ def calculate_stats(dataset_name: str):
     return formal_charges, molecular_weights, elements, heavy_atom_count
 
 
-for dataset in ['maxmin-train', 'maxmin-valid', 'maxmin-test']:
+for dataset in ["maxmin-train", "maxmin-valid", "maxmin-test"]:
     charges, weights, atoms, heavy_atoms = calculate_stats(dataset_name=dataset)
-    print(f'Running {dataset} number of molecules {len(weights)}')
-    print('Total formal charges ', charges)
-    print('Total elements', atoms)
-    print(f'Average mol weight {np.mean(weights)} and std {np.std(weights)}')
-    print(f'Average number of heavy atoms {np.mean(heavy_atoms)} and std {np.std(heavy_atoms)}')
-
+    print(f"Running {dataset} number of molecules {len(weights)}")
+    print("Total formal charges ", charges)
+    print("Total elements", atoms)
+    print(f"Average mol weight {np.mean(weights)} and std {np.std(weights)}")
+    print(
+        f"Average number of heavy atoms {np.mean(heavy_atoms)} and std {np.std(heavy_atoms)}"
+    )
